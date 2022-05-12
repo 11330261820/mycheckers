@@ -20,6 +20,5 @@
             </intent-filter>
         </activity>
         <activity android:name=".MyCheckers"/>
-        <activity android:name=".ChooseMode" />
     </application>
 </manifest>

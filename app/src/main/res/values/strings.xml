@@ -1,9 +1,4 @@
 <resources>
     <string name="app_name">MyCheckers</string>
     <string name="Play">Играть</string>
-    <string name="Mode">Выбрать режим</string>
-    <string name="Own">Создать свою игру</string>
-    <string name="HowToPlay">Как играть</string>
-    <string name="Settings">Настройки</string>
-    <string name="mode">ВЫБОР РЕЖИМА</string>
 </resources>

@@ -7,9 +7,9 @@ public class Square {
     private Bitmap b;
     private final int v, h;
     private int color, move;
-    private boolean allow, movew, moveb, d, l, r, fightw, fightb;
+    private boolean allow, movew, moveb, d, l, r, fightw, fightb, queen;
 
-    public Square(Bitmap b, int v, int h, int color, boolean allow, boolean d, boolean movew, boolean moveb, boolean l, boolean r, boolean fightw, boolean fightb, int move) {
+    public Square(Bitmap b, int v, int h, int color, boolean allow, boolean d, boolean movew, boolean moveb, boolean l, boolean r, boolean fightw, boolean fightb, int move, boolean queen) {
         this.b = b;
         this.v = v;
         this.h = h;
@@ -23,6 +23,7 @@ public class Square {
         this.fightw = fightw;
         this.fightb = fightb;
         this.move = move;
+        this.queen = queen;
     }
 
     public Bitmap getB() {
@@ -119,5 +120,13 @@ public class Square {
 
     public void setMove(int move) {
         this.move = move;
+    }
+
+    public boolean isQueen() {
+        return queen;
+    }
+
+    public void setQueen(boolean queen) {
+        this.queen = queen;
     }
 }

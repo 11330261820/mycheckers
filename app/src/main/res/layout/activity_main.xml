@@ -15,31 +15,4 @@
         android:layout_marginBottom="5dp"
         android:text="@string/Play" />
 
-    <Button
-        android:id="@+id/mode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="@string/Mode" />
-
-    <Button
-        android:id="@+id/owngame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="@string/Own" />
-
-    <Button
-        android:id="@+id/howtoplay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="@string/HowToPlay" />
-
-    <Button
-        android:id="@+id/settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="@string/Settings" />
 </LinearLayout>
