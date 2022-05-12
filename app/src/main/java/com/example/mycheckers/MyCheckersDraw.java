@@ -551,7 +551,6 @@ public class MyCheckersDraw extends View {
                         else if (j == 0 && squares[i][j].getB() == bc) squares[i][j].setB(bq);
                         drawSquare(canvas, squares[i][j], squares[i][j].getB());
                     }
-                    canvas.drawText("" + who + " " + check3, 100, 100, p);
                 }
             }
         }
