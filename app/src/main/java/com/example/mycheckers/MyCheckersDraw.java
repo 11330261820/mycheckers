@@ -6,19 +6,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowMetrics;
 
 public class MyCheckersDraw extends View {
-    Bitmap wc = BitmapFactory.decodeResource(getResources(), R.drawable.whitechecker);
-    Bitmap bc = BitmapFactory.decodeResource(getResources(), R.drawable.blackchecker);
-    Bitmap wq = BitmapFactory.decodeResource(getResources(), R.drawable.whitequeen);
-    Bitmap bq = BitmapFactory.decodeResource(getResources(), R.drawable.blackqueen);
-    Bitmap bs = BitmapFactory.decodeResource(getResources(), R.drawable.blacksquare);
-
+    Bitmap wc1 = BitmapFactory.decodeResource(getResources(), R.drawable.whitechecker);
+    Bitmap bc1 = BitmapFactory.decodeResource(getResources(), R.drawable.blackchecker);
+    Bitmap wq1 = BitmapFactory.decodeResource(getResources(), R.drawable.whitequeen);
+    Bitmap bq1 = BitmapFactory.decodeResource(getResources(), R.drawable.blackqueen);
+    Bitmap bs1 = BitmapFactory.decodeResource(getResources(), R.drawable.blacksquare);
+    Bitmap wc, bc, wq, bq, bs;
     Square[][] squares = new Square[8][8];
     float touchX, touchY;
     int side, check2, flag, o, q, k, l, m, n, r, t, check, check1, check3, mf, fa, cw, cb = 0;
@@ -38,14 +35,14 @@ public class MyCheckersDraw extends View {
                             squares[i][j] = new Square(null, 0, 0, 3, false, false, false, false, false, false, false, false, 0, false);
                             break;
                         case 1:
-                            squares[i][j] = new Square(wc, i + 1, j + 1, 1, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(wc1, i + 1, j + 1, 1, false, false, false, false, false, false, false, false, 0, false);
                             break;
                         case 3:
-                            squares[i][j] = new Square(bs, i + 1, j + 1, 0, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(bs1, i + 1, j + 1, 0, false, false, false, false, false, false, false, false, 0, false);
                             break;
                         case 5:
                         case 7:
-                            squares[i][j] = new Square(bc, i + 1, j + 1, 2, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(bc1, i + 1, j + 1, 2, false, false, false, false, false, false, false, false, 0, false);
                             break;
                     }
                 } else {
@@ -58,13 +55,13 @@ public class MyCheckersDraw extends View {
                             break;
                         case 0:
                         case 2:
-                            squares[i][j] = new Square(wc, i + 1, j + 1, 1, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(wc1, i + 1, j + 1, 1, false, false, false, false, false, false, false, false, 0, false);
                             break;
                         case 4:
-                            squares[i][j] = new Square(bs, i + 1, j + 1, 0, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(bs1, i + 1, j + 1, 0, false, false, false, false, false, false, false, false, 0, false);
                             break;
                         case 6:
-                            squares[i][j] = new Square(bc, i + 1, j + 1, 2, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(bc1, i + 1, j + 1, 2, false, false, false, false, false, false, false, false, 0, false);
                             break;
                     }
                 }
@@ -78,6 +75,12 @@ public class MyCheckersDraw extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        side = getWidth() / 8;
+        wc = Bitmap.createScaledBitmap(wc1, side, side, false);
+        bc = Bitmap.createScaledBitmap(bc1, side, side, false);
+        wq = Bitmap.createScaledBitmap(wq1, side, side, false);
+        bq = Bitmap.createScaledBitmap(bq1, side, side, false);
+        bs = Bitmap.createScaledBitmap(bs1, side, side, false);
         p.setColor(Color.WHITE);
         canvas.drawRect(0, 0, getWidth(), getHeight(), p);
         int x = 0, y = getHeight() / 2 - getWidth() / 2, a = 0;
@@ -101,15 +104,19 @@ public class MyCheckersDraw extends View {
         /*начальная расстановка шашек*/
         for (int i = 0; i < squares.length; i++) {
             for (int j = 0; j < squares[i].length; j++) {
-                if (i % 2 == j % 2)
+                if (i % 2 == j % 2) {
+                    if (squares[i][j].getB() == wc1) squares[i][j].setB(wc);
+                    if (squares[i][j].getB() == bc1) squares[i][j].setB(bc);
+                    if (squares[i][j].getB() == bs1) squares[i][j].setB(bs);
                     spawn(canvas, squares[i][j]);
+                }
             }
         }
         p.setStyle(Paint.Style.FILL);
-        p.setTextSize(100f);
+        p.setTextSize(80f);
         p.setColor(Color.BLACK);
         p1.setColor(Color.BLACK);
-        p1.setTextSize(50f);
+        p1.setTextSize(getWidth() / 10);
         canvas.drawText("Ход белых", getWidth() / 4, getHeight() / 2 + getWidth() / 2 + 100, p);
         for (int i = 0; i < squares.length; i++) {
             for (int j = 0; j < squares[i].length; j++) {
@@ -749,12 +756,12 @@ public class MyCheckersDraw extends View {
                         canvas.drawText("Ход чёрных", getWidth() / 4, getHeight() / 2 - getWidth() / 2 - 100, p);
                         canvas.rotate(180, getWidth() / 2, getHeight() / 2 - getWidth() / 2 - 100);
                         p.setColor(Color.WHITE);
-                        canvas.drawRect(getWidth() / 4, getHeight() / 2 + getWidth() / 2 + 10, getWidth() * 3 / 4, getHeight() / 2 + getWidth() / 2 + 120, p);
+                        canvas.drawRect(0, getHeight() / 2 + getWidth() / 2, getWidth(), getHeight(), p);
                     } else if (who == 1) {
                         p.setColor(Color.BLACK);
                         canvas.drawText("Ход белых", getWidth() / 4, getHeight() / 2 + getWidth() / 2 + 100, p);
                         p.setColor(Color.WHITE);
-                        canvas.drawRect(getWidth() / 4, getHeight() / 2 - getWidth() / 2 - 70, getWidth() * 3 / 4, getHeight() / 2 - getWidth() / 2 - 10, p);
+                        canvas.drawRect(0, 0, getWidth(), getHeight() / 2 - getWidth() / 2, p);
                     }
                     for (Square[] square : squares) {
                         for (int l = 0; l < squares[i].length; l++) {
@@ -768,17 +775,16 @@ public class MyCheckersDraw extends View {
                         canvas.drawText("Чёрные выиграли", getWidth() / 8, getHeight() / 2 - getWidth() / 2 - 100, p);
                         canvas.rotate(180, getWidth() / 2, getHeight() / 2 - getWidth() / 2 - 100);
                         p.setColor(Color.WHITE);
-                        canvas.drawRect(getWidth() / 4, getHeight() / 2 + getWidth() / 2 + 10, getWidth() * 3 / 4, getHeight() / 2 + getWidth() / 2 + 120, p);
+                        canvas.drawRect(0, getHeight() / 2 + getWidth() / 2, getWidth(), getHeight(), p);
                     }
                     if (cb == 0) {
                         p.setColor(Color.RED);
                         canvas.drawText("Белые выиграли", getWidth() / 8, getHeight() / 2 + getWidth() / 2 + 100, p);
                         p.setColor(Color.WHITE);
-                        canvas.drawRect(getWidth() / 5, getHeight() / 2 - getWidth() / 2 - 120, getWidth() * 3 / 4, getHeight() / 2 - getWidth() / 2 - 10, p);
+                        canvas.drawRect(0, 0, getWidth(), getHeight() / 2 - getWidth() / 2, p);
                     }
                     cw = 0;
                     cb = 0;
-                    canvas.drawText("" + fa + " " + mf + " " + s1 + " " + s2 + " " + s3 + " " + s4 + " " + s5 + " " + s6 + " " + s7 + " " + s8 + " " + side, 100, 100, p1);
                 }
             }
         }
