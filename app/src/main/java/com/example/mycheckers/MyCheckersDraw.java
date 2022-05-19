@@ -772,14 +772,14 @@ public class MyCheckersDraw extends View {
                     if (cw == 0) {
                         p.setColor(Color.RED);
                         canvas.rotate(180, getWidth() / 2, getHeight() / 2 - getWidth() / 2 - 100);
-                        canvas.drawText("Чёрные выиграли", getWidth() / 8, getHeight() / 2 - getWidth() / 2 - 100, p);
+                        canvas.drawText("Чёрные выиграли", getWidth() / 20, getHeight() / 2 - getWidth() / 2 - 100, p);
                         canvas.rotate(180, getWidth() / 2, getHeight() / 2 - getWidth() / 2 - 100);
                         p.setColor(Color.WHITE);
                         canvas.drawRect(0, getHeight() / 2 + getWidth() / 2, getWidth(), getHeight(), p);
                     }
                     if (cb == 0) {
                         p.setColor(Color.RED);
-                        canvas.drawText("Белые выиграли", getWidth() / 8, getHeight() / 2 + getWidth() / 2 + 100, p);
+                        canvas.drawText("Белые выиграли", getWidth() / 20, getHeight() / 2 + getWidth() / 2 + 100, p);
                         p.setColor(Color.WHITE);
                         canvas.drawRect(0, 0, getWidth(), getHeight() / 2 - getWidth() / 2, p);
                     }
@@ -1899,4 +1899,4 @@ public class MyCheckersDraw extends View {
         invalidate();
         return true;
     }
-}
+}//код скорее всего будет доработан на выходных
