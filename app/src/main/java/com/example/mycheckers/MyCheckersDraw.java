@@ -18,7 +18,7 @@ public class MyCheckersDraw extends View {
     Bitmap wc, bc, wq, bq, bs;
     Square[][] squares = new Square[8][8];
     float touchX, touchY;
-    int side, check2, flag, o, q, k, l, m, n, r, t, check, check1, check3, mf, fa, cw, cb = 0;
+    int side, check2, flag, o, q, k, l, m, n, r, t, check, check1, check3, mf, fa, cw, cb, check4 = 0;
     int s1 = -1, s2 = -1, s3 = -1, s4 = -1, s5 = -1, s6 = -1, s7 = -1, s8 = -1;
     int who = 1;
 
@@ -32,17 +32,17 @@ public class MyCheckersDraw extends View {
                         case 2:
                         case 4:
                         case 6:
-                            squares[i][j] = new Square(null, 0, 0, 3, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(null, 0, 0, 3, false, false, 0, false);
                             break;
                         case 1:
-                            squares[i][j] = new Square(wc1, i + 1, j + 1, 1, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(wc1, i + 1, j + 1, 1, false, false, 0, false);
                             break;
                         case 3:
-                            squares[i][j] = new Square(bs1, i + 1, j + 1, 0, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(bs1, i + 1, j + 1, 0, false, false, 0, false);
                             break;
                         case 5:
                         case 7:
-                            squares[i][j] = new Square(bc1, i + 1, j + 1, 2, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(bc1, i + 1, j + 1, 2, false, false, 0, false);
                             break;
                     }
                 } else {
@@ -51,17 +51,17 @@ public class MyCheckersDraw extends View {
                         case 3:
                         case 5:
                         case 7:
-                            squares[i][j] = new Square(null, 0, 0, 3, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(null, 0, 0, 3, false, false, 0, false);
                             break;
                         case 0:
                         case 2:
-                            squares[i][j] = new Square(wc1, i + 1, j + 1, 1, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(wc1, i + 1, j + 1, 1, false, false, 0, false);
                             break;
                         case 4:
-                            squares[i][j] = new Square(bs1, i + 1, j + 1, 0, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(bs1, i + 1, j + 1, 0, false, false, 0, false);
                             break;
                         case 6:
-                            squares[i][j] = new Square(bc1, i + 1, j + 1, 2, false, false, false, false, false, false, false, false, 0, false);
+                            squares[i][j] = new Square(bc1, i + 1, j + 1, 2, false, false, 0, false);
                             break;
                     }
                 }
@@ -76,11 +76,13 @@ public class MyCheckersDraw extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         side = getWidth() / 8;
-        wc = Bitmap.createScaledBitmap(wc1, side, side, false);
-        bc = Bitmap.createScaledBitmap(bc1, side, side, false);
-        wq = Bitmap.createScaledBitmap(wq1, side, side, false);
-        bq = Bitmap.createScaledBitmap(bq1, side, side, false);
-        bs = Bitmap.createScaledBitmap(bs1, side, side, false);
+        if (check4 == 0) {
+            wc = Bitmap.createScaledBitmap(wc1, side, side, false);
+            bc = Bitmap.createScaledBitmap(bc1, side, side, false);
+            wq = Bitmap.createScaledBitmap(wq1, side, side, false);
+            bq = Bitmap.createScaledBitmap(bq1, side, side, false);
+            bs = Bitmap.createScaledBitmap(bs1, side, side, false);
+        }
         p.setColor(Color.WHITE);
         canvas.drawRect(0, 0, getWidth(), getHeight(), p);
         int x = 0, y = getHeight() / 2 - getWidth() / 2, a = 0;
@@ -117,7 +119,9 @@ public class MyCheckersDraw extends View {
         p.setColor(Color.BLACK);
         p1.setColor(Color.BLACK);
         p1.setTextSize(getWidth() / 10);
-        canvas.drawText("Ход белых", getWidth() / 4, getHeight() / 2 + getWidth() / 2 + 100, p);
+        if (check4 == 0)
+            canvas.drawText("Ход белых", getWidth() / 4, getHeight() / 2 + getWidth() / 2 + 100, p);
+        check4++;
         for (int i = 0; i < squares.length; i++) {
             for (int j = 0; j < squares[i].length; j++) {
                 if (i % 2 == j % 2 && squares[i][j].isAllow() && squares[i][j].isD()) {
@@ -128,7 +132,6 @@ public class MyCheckersDraw extends View {
                             }
                         }
                     }
-                    /*подсветка полей*/
                     if (check1 == 1) {
                         if (!squares[i][j].isQueen())
                             switch (j) {
@@ -628,123 +631,6 @@ public class MyCheckersDraw extends View {
                         check1 = 0;
                     }
                     check = 0;
-                    /*ход белой шашки*/
-                    if (squares[i][j].isMovew()) {
-                        if (squares[i][j].isR()) {
-                            move(canvas, squares[i][j], squares[i - 1][j - 1], wc);
-                            squares[i][j].setR(false);
-                        } else if (squares[i][j].isL()) {
-                            move(canvas, squares[i][j], squares[i + 1][j - 1], wc);
-                            squares[i][j].setL(false);
-                        }
-                        squares[i][j].setMovew(false);
-                    }
-                    /*ход чёрной шашки*/
-                    if (squares[i][j].isMoveb()) {
-                        if (squares[i][j].isR()) {
-                            move(canvas, squares[i][j], squares[i - 1][j + 1], bc);
-                            squares[i][j].setR(false);
-                        } else if (squares[i][j].isL()) {
-                            move(canvas, squares[i][j], squares[i + 1][j + 1], bc);
-                            squares[i][j].setL(false);
-                        }
-                        squares[i][j].setMoveb(false);
-                    }
-                    /*взятие белой шашкой*/
-                    if (squares[i][j].isFightw()) {
-                        switch (i) {
-                            case 0:
-                            case 1:
-                                switch (squares[i][j].getMove()) {
-                                    case 2:
-                                        fight(canvas, squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], wc);
-                                        break;
-                                    case 3:
-                                        fight(canvas, squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], wc);
-                                        break;
-                                }
-                                break;
-                            case 6:
-                            case 7:
-                                switch (squares[i][j].getMove()) {
-                                    case 1:
-                                        fight(canvas, squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], wc);
-                                        break;
-                                    case 4:
-                                        fight(canvas, squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], wc);
-                                        break;
-                                }
-                                break;
-                            case 2:
-                            case 3:
-                            case 4:
-                            case 5:
-                                switch (squares[i][j].getMove()) {
-                                    case 1:
-                                        fight(canvas, squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], wc);
-                                        break;
-                                    case 2:
-                                        fight(canvas, squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], wc);
-                                        break;
-                                    case 3:
-                                        fight(canvas, squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], wc);
-                                        break;
-                                    case 4:
-                                        fight(canvas, squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], wc);
-                                        break;
-                                }
-                                break;
-                        }
-                        squares[i][j].setMove(0);
-                    }
-                    /*взятие чёрной шашкой*/
-                    if (squares[i][j].isFightb()) {
-                        switch (i) {
-                            case 0:
-                            case 1:
-                                switch (squares[i][j].getMove()) {
-                                    case 2:
-                                        fight(canvas, squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], bc);
-                                        break;
-                                    case 3:
-                                        fight(canvas, squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], bc);
-                                        break;
-                                }
-                                break;
-                            case 6:
-                            case 7:
-                                switch (squares[i][j].getMove()) {
-                                    case 1:
-                                        fight(canvas, squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], bc);
-                                        break;
-                                    case 4:
-                                        fight(canvas, squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], bc);
-                                        break;
-                                }
-                                break;
-                            case 2:
-                            case 3:
-                            case 4:
-                            case 5:
-                                switch (squares[i][j].getMove()) {
-                                    case 1:
-                                        fight(canvas, squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], bc);
-                                        break;
-                                    case 2:
-                                        fight(canvas, squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], bc);
-                                        break;
-                                    case 3:
-                                        fight(canvas, squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], bc);
-                                        break;
-                                    case 4:
-                                        fight(canvas, squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], bc);
-                                        break;
-                                }
-                                break;
-                        }
-                        squares[i][j].setMove(0);
-                    }
-                    /*появление дамки*/
                     if (squares[i][j].isQueen()) {
                         if (j == 7 && squares[i][j].getB() == wc) squares[i][j].setB(wq);
                         else if (j == 0 && squares[i][j].getB() == bc) squares[i][j].setB(bq);
@@ -756,7 +642,7 @@ public class MyCheckersDraw extends View {
                         canvas.drawText("Ход чёрных", getWidth() / 4, getHeight() / 2 - getWidth() / 2 - 100, p);
                         canvas.rotate(180, getWidth() / 2, getHeight() / 2 - getWidth() / 2 - 100);
                         p.setColor(Color.WHITE);
-                        canvas.drawRect(0, getHeight() / 2 + getWidth() / 2, getWidth(), getHeight(), p);
+                        canvas.drawRect(0, getHeight() / 2 + getWidth() / 2 + 10, getWidth(), getHeight(), p);
                     } else if (who == 1) {
                         p.setColor(Color.BLACK);
                         canvas.drawText("Ход белых", getWidth() / 4, getHeight() / 2 + getWidth() / 2 + 100, p);
@@ -775,7 +661,7 @@ public class MyCheckersDraw extends View {
                         canvas.drawText("Чёрные выиграли", getWidth() / 20, getHeight() / 2 - getWidth() / 2 - 100, p);
                         canvas.rotate(180, getWidth() / 2, getHeight() / 2 - getWidth() / 2 - 100);
                         p.setColor(Color.WHITE);
-                        canvas.drawRect(0, getHeight() / 2 + getWidth() / 2, getWidth(), getHeight(), p);
+                        canvas.drawRect(0, getHeight() / 2 + getWidth() / 2 + 10, getWidth(), getHeight(), p);
                     }
                     if (cb == 0) {
                         p.setColor(Color.RED);
@@ -796,9 +682,9 @@ public class MyCheckersDraw extends View {
 
     public void drawSquare(Canvas canvas, Square s, Bitmap b) {
         s.setB(b);
-        if (s.getB() == wc || s.getB() == wq)
+        if (s.getB() == wc || s.getB() == wq || s.getB() == wq1)
             s.setColor(1);
-        else if (s.getB() == bc || s.getB() == bq)
+        else if (s.getB() == bc || s.getB() == bq || s.getB() == bq1)
             s.setColor(2);
         else if (s.getB() == bs)
             s.setColor(0);
@@ -1287,56 +1173,36 @@ public class MyCheckersDraw extends View {
                                                 case 4:
                                                 case 5:
                                                     if (squares[i - 1][j - 1].isD() && squares[i - 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j - 1], wc);
                                                     } else if (squares[i + 1][j - 1].isD() && squares[i + 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j - 1], wc);
                                                     } else if (squares[i - 1][j + 1].isD() && squares[i - 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j + 1], bc);
                                                     } else if (squares[i + 1][j + 1].isD() && squares[i + 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j + 1], bc);
                                                     } else if (squares[i - 2][j - 2].isD()) {
                                                         if (squares[i - 1][j - 1].getColor() == 1 && squares[i - 2][j - 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
-                                                            squares[i][j].setR(true);
-                                                            squares[i][j].setMove(1);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], bc);
                                                         } else if (squares[i - 1][j - 1].getColor() == 2 && squares[i - 2][j - 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
-                                                            squares[i][j].setR(true);
-                                                            squares[i][j].setMove(1);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], wc);
                                                         }
                                                     } else if (squares[i + 2][j - 2].isD()) {
                                                         if (squares[i + 1][j - 1].getColor() == 1 && squares[i + 2][j - 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
-                                                            squares[i][j].setL(true);
-                                                            squares[i][j].setMove(2);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], bc);
                                                         } else if (squares[i + 1][j - 1].getColor() == 2 && squares[i + 2][j - 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
-                                                            squares[i][j].setL(true);
-                                                            squares[i][j].setMove(2);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], wc);
                                                         }
                                                     } else if (squares[i - 2][j + 2].isD()) {
                                                         if (squares[i - 1][j + 1].getColor() == 1 && squares[i - 2][j + 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
-                                                            squares[i][j].setR(true);
-                                                            squares[i][j].setMove(4);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], bc);
                                                         } else if (squares[i - 1][j + 1].getColor() == 2 && squares[i - 2][j + 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
-                                                            squares[i][j].setR(true);
-                                                            squares[i][j].setMove(4);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], wc);
                                                         }
                                                     } else if (squares[i + 2][j + 2].isD()) {
                                                         if (squares[i + 1][j + 1].getColor() == 1 && squares[i + 2][j + 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
-                                                            squares[i][j].setL(true);
-                                                            squares[i][j].setMove(3);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], bc);
                                                         } else if (squares[i + 1][j + 1].getColor() == 2 && squares[i + 2][j + 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
-                                                            squares[i][j].setL(true);
-                                                            squares[i][j].setMove(3);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], wc);
                                                         }
                                                     } else {
                                                         for (Square[] square : squares) {
@@ -1349,34 +1215,25 @@ public class MyCheckersDraw extends View {
                                                     break;
                                                 case 0:
                                                     if (squares[i - 1][j + 1].isD() && squares[i - 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j + 1], bc);
                                                         squares[i][j].setQueen(true);
                                                     } else if (squares[i + 1][j + 1].isD() && squares[i + 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j + 1], bc);
                                                         squares[i][j].setQueen(true);
                                                     } else if (squares[i - 2][j + 2].isD()) {
                                                         if (squares[i - 1][j + 1].getColor() == 1 && squares[i - 2][j + 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], bc);
                                                             squares[i][j].setQueen(true);
-                                                            squares[i][j].setR(true);
-                                                            squares[i][j].setMove(4);
                                                         } else if (squares[i - 1][j + 1].getColor() == 2 && squares[i - 2][j + 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
-                                                            squares[i][j].setR(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], wc);
                                                             squares[i][j].setMove(4);
                                                         }
                                                     } else if (squares[i + 2][j + 2].isD()) {
                                                         if (squares[i + 1][j + 1].getColor() == 1 && squares[i + 2][j + 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], bc);
                                                             squares[i][j].setQueen(true);
-                                                            squares[i][j].setL(true);
-                                                            squares[i][j].setMove(3);
                                                         } else if (squares[i + 1][j + 1].getColor() == 2 && squares[i + 2][j + 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
-                                                            squares[i][j].setL(true);
-                                                            squares[i][j].setMove(3);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], wc);
                                                         }
                                                     } else {
                                                         for (Square[] square : squares) {
@@ -1389,36 +1246,24 @@ public class MyCheckersDraw extends View {
                                                     break;
                                                 case 1:
                                                     if (squares[i - 1][j - 1].isD() && squares[i - 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j - 1], wc);
                                                     } else if (squares[i + 1][j - 1].isD() && squares[i + 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j - 1], wc);
                                                     } else if (squares[i - 1][j + 1].isD() && squares[i - 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j + 1], bc);
                                                     } else if (squares[i + 1][j + 1].isD() && squares[i + 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j + 1], bc);
                                                     } else if (squares[i - 2][j + 2].isD()) {
                                                         if (squares[i - 1][j + 1].getColor() == 1 && squares[i - 2][j + 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
-                                                            squares[i][j].setR(true);
-                                                            squares[i][j].setMove(4);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], bc);
                                                         } else if (squares[i - 1][j + 1].getColor() == 2 && squares[i - 2][j + 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
-                                                            squares[i][j].setR(true);
-                                                            squares[i][j].setMove(4);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], wc);
                                                         }
                                                     } else if (squares[i + 2][j + 2].isD()) {
                                                         if (squares[i + 1][j + 1].getColor() == 1 && squares[i + 2][j + 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
-                                                            squares[i][j].setL(true);
-                                                            squares[i][j].setMove(3);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], bc);
                                                         } else if (squares[i + 1][j + 1].getColor() == 2 && squares[i + 2][j + 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
-                                                            squares[i][j].setL(true);
-                                                            squares[i][j].setMove(3);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], wc);
                                                         }
                                                     } else {
                                                         for (Square[] square : squares) {
@@ -1431,36 +1276,24 @@ public class MyCheckersDraw extends View {
                                                     break;
                                                 case 6:
                                                     if (squares[i - 1][j - 1].isD() && squares[i - 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j - 1], wc);
                                                     } else if (squares[i + 1][j - 1].isD() && squares[i + 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j - 1], wc);
                                                     } else if (squares[i - 1][j + 1].isD() && squares[i - 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j + 1], bc);
                                                     } else if (squares[i + 1][j + 1].isD() && squares[i + 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j + 1], bc);
                                                     } else if (squares[i - 2][j - 2].isD()) {
                                                         if (squares[i - 1][j - 1].getColor() == 1 && squares[i - 2][j - 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
-                                                            squares[i][j].setR(true);
-                                                            squares[i][j].setMove(1);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], bc);
                                                         } else if (squares[i - 1][j - 1].getColor() == 2 && squares[i - 2][j - 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
-                                                            squares[i][j].setR(true);
-                                                            squares[i][j].setMove(1);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], wc);
                                                         }
                                                     } else if (squares[i + 2][j - 2].isD()) {
                                                         if (squares[i + 1][j - 1].getColor() == 1 && squares[i + 2][j - 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
-                                                            squares[i][j].setL(true);
-                                                            squares[i][j].setMove(2);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], bc);
                                                         } else if (squares[i + 1][j - 1].getColor() == 2 && squares[i + 2][j - 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
-                                                            squares[i][j].setL(true);
-                                                            squares[i][j].setMove(2);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], wc);
                                                         }
                                                     } else {
                                                         for (Square[] square : squares) {
@@ -1473,34 +1306,24 @@ public class MyCheckersDraw extends View {
                                                     break;
                                                 case 7:
                                                     if (squares[i - 1][j - 1].isD() && squares[i - 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j - 1], wc);
                                                         squares[i][j].setQueen(true);
                                                     } else if (squares[i + 1][j - 1].isD() && squares[i + 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j - 1], wc);
                                                         squares[i][j].setQueen(true);
                                                     } else if (squares[i - 2][j - 2].isD()) {
                                                         if (squares[i - 1][j - 1].getColor() == 1 && squares[i - 2][j - 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
-                                                            squares[i][j].setR(true);
-                                                            squares[i][j].setMove(1);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], bc);
                                                         } else if (squares[i - 1][j - 1].getColor() == 2 && squares[i - 2][j - 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], wc);
                                                             squares[i][j].setQueen(true);
-                                                            squares[i][j].setR(true);
-                                                            squares[i][j].setMove(1);
                                                         }
                                                     } else if (squares[i + 2][j - 2].isD()) {
                                                         if (squares[i + 1][j - 1].getColor() == 1 && squares[i + 2][j - 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
-                                                            squares[i][j].setL(true);
-                                                            squares[i][j].setMove(2);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], bc);
                                                         } else if (squares[i + 1][j - 1].getColor() == 2 && squares[i + 2][j - 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], wc);
                                                             squares[i][j].setQueen(true);
-                                                            squares[i][j].setL(true);
-                                                            squares[i][j].setMove(2);
                                                         }
                                                     } else {
                                                         for (Square[] square : squares) {
@@ -1518,31 +1341,23 @@ public class MyCheckersDraw extends View {
                                                 case 3:
                                                 case 5:
                                                     if (squares[i - 1][j - 1].isD() && squares[i - 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j - 1], wc);
                                                     } else if (squares[i + 1][j - 1].isD() && squares[i + 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j - 1], wc);
                                                     } else if (squares[i - 1][j + 1].isD() && squares[i - 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j + 1], bc);
                                                     } else if (squares[i + 1][j + 1].isD() && squares[i + 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j + 1], bc);
                                                     } else if (squares[i + 2][j - 2].isD()) {
                                                         if (squares[i + 1][j - 1].getColor() == 1 && squares[i + 2][j - 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], bc);
                                                         else if (squares[i + 1][j - 1].getColor() == 2 && squares[i + 2][j - 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setL(true);
-                                                        squares[i][j].setMove(2);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], wc);
                                                     } else if (squares[i + 2][j + 2].isD()) {
                                                         if (squares[i + 1][j + 1].getColor() == 1 && squares[i + 2][j + 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], bc);
                                                         else if (squares[i + 1][j + 1].getColor() == 2 && squares[i + 2][j + 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setL(true);
-                                                        squares[i][j].setMove(3);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], wc);
                                                     } else {
                                                         for (Square[] square : squares) {
                                                             for (int l = 0; l < squares[i].length; l++) {
@@ -1554,24 +1369,18 @@ public class MyCheckersDraw extends View {
                                                     break;
                                                 case 1:
                                                     if (squares[i - 1][j - 1].isD() && squares[i - 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j - 1], wc);
                                                     } else if (squares[i + 1][j - 1].isD() && squares[i + 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j - 1], wc);
                                                     } else if (squares[i - 1][j + 1].isD() && squares[i - 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j + 1], bc);
                                                     } else if (squares[i + 1][j + 1].isD() && squares[i + 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j + 1], bc);
                                                     } else if (squares[i + 2][j + 2].isD()) {
                                                         if (squares[i + 1][j + 1].getColor() == 1 && squares[i + 2][j + 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], bc);
                                                         else if (squares[i + 1][j + 1].getColor() == 2 && squares[i + 2][j + 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setL(true);
-                                                        squares[i][j].setMove(3);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], wc);
                                                     } else {
                                                         for (Square[] square : squares) {
                                                             for (int l = 0; l < squares[i].length; l++) {
@@ -1583,22 +1392,18 @@ public class MyCheckersDraw extends View {
                                                     break;
                                                 case 7:
                                                     if (squares[i - 1][j - 1].isD() && squares[i - 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j - 1], wc);
                                                         squares[i][j].setQueen(true);
                                                     } else if (squares[i + 1][j - 1].isD() && squares[i + 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j - 1], wc);
                                                         squares[i][j].setQueen(true);
                                                     } else if (squares[i + 2][j - 2].isD()) {
                                                         if (squares[i + 1][j - 1].getColor() == 1 && squares[i + 2][j - 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], bc);
                                                         else if (squares[i + 1][j - 1].getColor() == 2 && squares[i + 2][j - 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], wc);
                                                             squares[i][j].setQueen(true);
                                                         }
-                                                        squares[i][j].setL(true);
-                                                        squares[i][j].setMove(2);
                                                     } else {
                                                         for (Square[] square : squares) {
                                                             for (int l = 0; l < squares[i].length; l++) {
@@ -1615,31 +1420,23 @@ public class MyCheckersDraw extends View {
                                                 case 2:
                                                 case 4:
                                                     if (squares[i - 1][j - 1].isD() && squares[i - 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j - 1], wc);
                                                     } else if (squares[i + 1][j - 1].isD() && squares[i + 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j - 1], wc);
                                                     } else if (squares[i - 1][j + 1].isD() && squares[i - 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j + 1], bc);
                                                     } else if (squares[i + 1][j + 1].isD() && squares[i + 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j + 1], bc);
                                                     } else if (squares[i - 2][j - 2].isD()) {
                                                         if (squares[i - 1][j - 1].getColor() == 1 && squares[i - 2][j - 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], bc);
                                                         else if (squares[i - 1][j - 1].getColor() == 2 && squares[i - 2][j - 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setR(true);
-                                                        squares[i][j].setMove(1);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], wc);
                                                     } else if (squares[i - 2][j + 2].isD()) {
                                                         if (squares[i - 1][j + 1].getColor() == 1 && squares[i - 2][j + 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], bc);
                                                         else if (squares[i - 1][j + 1].getColor() == 2 && squares[i - 2][j + 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setR(true);
-                                                        squares[i][j].setMove(4);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], wc);
                                                     } else {
                                                         for (Square[] square : squares) {
                                                             for (int l = 0; l < squares[i].length; l++) {
@@ -1651,21 +1448,17 @@ public class MyCheckersDraw extends View {
                                                     break;
                                                 case 0:
                                                     if (squares[i - 1][j + 1].isD() && squares[i - 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j + 1], bc);
                                                         squares[i][j].setQueen(true);
                                                     } else if (squares[i + 1][j + 1].isD() && squares[i + 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j + 1], bc);
                                                         squares[i][j].setQueen(true);
                                                     } else if (squares[i - 2][j + 2].isD()) {
                                                         if (squares[i - 1][j + 1].getColor() == 1 && squares[i - 2][j + 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], bc);
                                                             squares[i][j].setQueen(true);
                                                         } else if (squares[i - 1][j + 1].getColor() == 2 && squares[i - 2][j + 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setR(true);
-                                                        squares[i][j].setMove(4);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], wc);
                                                     } else {
                                                         for (Square[] square : squares) {
                                                             for (int l = 0; l < squares[i].length; l++) {
@@ -1677,24 +1470,18 @@ public class MyCheckersDraw extends View {
                                                     break;
                                                 case 6:
                                                     if (squares[i - 1][j - 1].isD() && squares[i - 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j - 1], wc);
                                                     } else if (squares[i + 1][j - 1].isD() && squares[i + 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j - 1], wc);
                                                     } else if (squares[i - 1][j + 1].isD() && squares[i - 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j + 1], bc);
                                                     } else if (squares[i + 1][j + 1].isD() && squares[i + 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j + 1], bc);
                                                     } else if (squares[i - 2][j - 2].isD()) {
                                                         if (squares[i - 1][j - 1].getColor() == 1 && squares[i - 2][j - 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], bc);
                                                         else if (squares[i - 1][j - 1].getColor() == 2 && squares[i - 2][j - 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setR(true);
-                                                        squares[i][j].setMove(1);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], wc);
                                                     } else {
                                                         for (Square[] square : squares) {
                                                             for (int l = 0; l < squares[i].length; l++) {
@@ -1711,25 +1498,19 @@ public class MyCheckersDraw extends View {
                                                 case 2:
                                                 case 4:
                                                     if (squares[i + 1][j - 1].isD() && squares[i + 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j - 1], wc);
                                                     } else if (squares[i + 1][j + 1].isD() && squares[i + 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j + 1], bc);
                                                     } else if (squares[i + 2][j - 2].isD()) {
                                                         if (squares[i + 1][j - 1].getColor() == 1 && squares[i + 2][j - 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], bc);
                                                         else if (squares[i + 1][j - 1].getColor() == 2 && squares[i + 2][j - 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setL(true);
-                                                        squares[i][j].setMove(2);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], wc);
                                                     } else if (squares[i + 2][j + 2].isD()) {
                                                         if (squares[i + 1][j + 1].getColor() == 1 && squares[i + 2][j + 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], bc);
                                                         else if (squares[i + 1][j + 1].getColor() == 2 && squares[i + 2][j + 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setL(true);
-                                                        squares[i][j].setMove(3);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], wc);
                                                     } else {
                                                         for (Square[] square : squares) {
                                                             for (int l = 0; l < squares[i].length; l++) {
@@ -1741,17 +1522,14 @@ public class MyCheckersDraw extends View {
                                                     break;
                                                 case 0:
                                                     if (squares[i + 1][j + 1].isD() && squares[i + 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j + 1], bc);
                                                         squares[i][j].setQueen(true);
                                                     } else if (squares[i + 2][j + 2].isD()) {
                                                         if (squares[i + 1][j + 1].getColor() == 1 && squares[i + 2][j + 2].getColor() == 2) {
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], bc);
                                                             squares[i][j].setQueen(true);
                                                         } else if (squares[i + 1][j + 1].getColor() == 2 && squares[i + 2][j + 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setL(true);
-                                                        squares[i][j].setMove(3);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j + 1], squares[i + 2][j + 2], wc);
                                                     } else {
                                                         for (Square[] square : squares) {
                                                             for (int l = 0; l < squares[i].length; l++) {
@@ -1763,18 +1541,14 @@ public class MyCheckersDraw extends View {
                                                     break;
                                                 case 6:
                                                     if (squares[i + 1][j - 1].isD() && squares[i + 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j - 1], wc);
                                                     } else if (squares[i + 1][j + 1].isD() && squares[i + 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setL(true);
+                                                        move(new Canvas(), squares[i][j], squares[i + 1][j + 1], bc);
                                                     } else if (squares[i + 2][j - 2].isD()) {
                                                         if (squares[i + 1][j - 1].getColor() == 1 && squares[i + 2][j - 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], bc);
                                                         else if (squares[i + 1][j - 1].getColor() == 2 && squares[i + 2][j - 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setL(true);
-                                                        squares[i][j].setMove(2);
+                                                            fight(new Canvas(), squares[i][j], squares[i + 1][j - 1], squares[i + 2][j - 2], wc);
                                                     } else {
                                                         for (Square[] square : squares) {
                                                             for (int l = 0; l < squares[i].length; l++) {
@@ -1791,25 +1565,19 @@ public class MyCheckersDraw extends View {
                                                 case 3:
                                                 case 5:
                                                     if (squares[i - 1][j - 1].isD() && squares[i - 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j - 1], wc);
                                                     } else if (squares[i - 1][j + 1].isD() && squares[i - 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j + 1], bc);
                                                     } else if (squares[i - 2][j - 2].isD()) {
                                                         if (squares[i - 1][j - 1].getColor() == 1 && squares[i - 2][j - 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], bc);
                                                         else if (squares[i - 1][j - 1].getColor() == 2 && squares[i - 2][j - 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setR(true);
-                                                        squares[i][j].setMove(1);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], wc);
                                                     } else if (squares[i - 2][j + 2].isD()) {
                                                         if (squares[i - 1][j + 1].getColor() == 1 && squares[i - 2][j + 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], bc);
                                                         else if (squares[i - 1][j + 1].getColor() == 2 && squares[i - 2][j + 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setR(true);
-                                                        squares[i][j].setMove(4);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], wc);
                                                     } else {
                                                         for (Square[] square : squares) {
                                                             for (int l = 0; l < squares[i].length; l++) {
@@ -1821,18 +1589,14 @@ public class MyCheckersDraw extends View {
                                                     break;
                                                 case 1:
                                                     if (squares[i - 1][j - 1].isD() && squares[i - 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j - 1], wc);
                                                     } else if (squares[i - 1][j + 1].isD() && squares[i - 1][j + 1].getColor() == 2 && mf == 0) {
-                                                        squares[i][j].setMoveb(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j + 1], bc);
                                                     } else if (squares[i - 2][j + 2].isD()) {
                                                         if (squares[i - 1][j + 1].getColor() == 1 && squares[i - 2][j + 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], bc);
                                                         else if (squares[i - 1][j + 1].getColor() == 2 && squares[i - 2][j + 2].getColor() == 1)
-                                                            squares[i][j].setFightw(true);
-                                                        squares[i][j].setR(true);
-                                                        squares[i][j].setMove(4);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j + 1], squares[i - 2][j + 2], wc);
                                                     } else {
                                                         for (Square[] square : squares) {
                                                             for (int l = 0; l < squares[i].length; l++) {
@@ -1844,18 +1608,15 @@ public class MyCheckersDraw extends View {
                                                     break;
                                                 case 7:
                                                     if (squares[i - 1][j - 1].isD() && squares[i - 1][j - 1].getColor() == 1 && mf == 0) {
-                                                        squares[i][j].setMovew(true);
-                                                        squares[i][j].setR(true);
+                                                        move(new Canvas(), squares[i][j], squares[i - 1][j - 1], wc);
                                                         squares[i][j].setQueen(true);
                                                     } else if (squares[i - 2][j - 2].isD()) {
                                                         if (squares[i - 1][j - 1].getColor() == 1 && squares[i - 2][j - 2].getColor() == 2)
-                                                            squares[i][j].setFightb(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], bc);
                                                         else if (squares[i - 1][j - 1].getColor() == 2 && squares[i - 2][j - 2].getColor() == 1) {
-                                                            squares[i][j].setFightw(true);
+                                                            fight(new Canvas(), squares[i][j], squares[i - 1][j - 1], squares[i - 2][j - 2], wc);
                                                             squares[i][j].setQueen(true);
                                                         }
-                                                        squares[i][j].setR(true);
-                                                        squares[i][j].setMove(1);
                                                     } else {
                                                         for (Square[] square : squares) {
                                                             for (int l = 0; l < squares[i].length; l++) {
@@ -1899,4 +1660,4 @@ public class MyCheckersDraw extends View {
         invalidate();
         return true;
     }
-}//код скорее всего будет доработан на выходных
+}

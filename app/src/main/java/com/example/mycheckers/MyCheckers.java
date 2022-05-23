@@ -2,6 +2,7 @@ package com.example.mycheckers;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MyCheckers extends AppCompatActivity {

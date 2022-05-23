@@ -9,10 +9,23 @@
     android:id="@+id/ll">
 
     <Button
-        android:id="@+id/classicgame"
+        android:id="@+id/choose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:text="@string/Play" />
 
+    <Button
+        android:id="@+id/about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="@string/about" />
+
+    <Button
+        android:id="@+id/manual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="@string/manual" />
 </LinearLayout>

@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    Button classicgame;
+    Button choose, about, manual;
     LinearLayout linearLayout;
 
     @Override
@@ -16,9 +16,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         linearLayout = findViewById(R.id.ll);
-        classicgame = findViewById(R.id.classicgame);
-        classicgame.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, MyCheckers.class);
+        choose = findViewById(R.id.choose);
+        about = findViewById(R.id.about);
+        manual = findViewById(R.id.manual);
+        choose.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, Choose.class);
+            startActivity(intent);
+        });
+        about.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, About.class);
+            startActivity(intent);
+        });
+        manual.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, Manual.class);
             startActivity(intent);
         });
     }

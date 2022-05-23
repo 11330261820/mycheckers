@@ -4,7 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/12345a/AndroidStudioProjects/MyCheckers/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1395" />
+        <entry key="..\:/Users/12345a/AndroidStudioProjects/MyCheckers/app/src/main/res/layout-land/about.xml" value="0.31040564373897706" />
+        <entry key="..\:/Users/12345a/AndroidStudioProjects/MyCheckers/app/src/main/res/layout-land/activity_main.xml" value="0.31040564373897706" />
+        <entry key="..\:/Users/12345a/AndroidStudioProjects/MyCheckers/app/src/main/res/layout-land/manual.xml" value="0.31040564373897706" />
+        <entry key="..\:/Users/12345a/AndroidStudioProjects/MyCheckers/app/src/main/res/layout/about.xml" value="1.706439393939394" />
         <entry key="..\:/Users/12345a/AndroidStudioProjects/MyCheckers/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/12345a/AndroidStudioProjects/MyCheckers/app/src/main/res/layout/black.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/12345a/AndroidStudioProjects/MyCheckers/app/src/main/res/layout/choose.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/12345a/AndroidStudioProjects/MyCheckers/app/src/main/res/layout/manual.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/12345a/AndroidStudioProjects/MyCheckers/app/src/main/res/layout/mode.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/12345a/AndroidStudioProjects/MyCheckers/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1395" />
       </map>

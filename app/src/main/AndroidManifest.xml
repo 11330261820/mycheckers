@@ -12,6 +12,7 @@
 
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,6 +20,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MyCheckers" />
+        <activity android:name=".MyCheckers"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".About"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Manual"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Choose"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Giveaway"
+            android:screenOrientation="portrait"/>
     </application>
 </manifest>
